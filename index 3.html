@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ClearView – Myopia Care</title>
+<style>
+:root{--bg:#f2f8f6;--card:#fff;--ink:#14363a;--mut:#5f7777;--g:#12705f;--mint:#dff3eb;--line:#dbe8e3;--warn:#fff3e2;--wt:#7a4a14;--bad:#ffe3dc;--bt:#9a2f17;--ok:#dff5e6;--ot:#1b6b3a;--out:#dfe9e5}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f1c1c;--card:#172a2a;--ink:#e6f2ef;--mut:#9bb4b0;--g:#3fc2a6;--mint:#1f3b38;--line:#264543;--warn:#3a2d19;--wt:#f0cf9a;--bad:#43211b;--bt:#ffb5a3;--ok:#183b27;--ot:#9be3b3;--out:#0a1313}}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{background:var(--out);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:grid;place-items:center}
+.phone{background:var(--bg);width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;position:relative;padding-top:env(safe-area-inset-top,0px)}
+@media(min-width:520px){.phone{width:390px;height:min(820px,96vh);border-radius:38px;border:9px solid #0d1b1b;box-shadow:0 20px 60px #0006}}
+#scr{flex:1;overflow-y:auto;padding:16px 16px 20px}
+nav{display:flex;border-top:1px solid var(--line);background:var(--card);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;background:none;border:0;color:var(--mut);padding:9px 0 8px;font-weight:600;font-size:11px;font-family:inherit;cursor:pointer}
+nav button span{display:block;font-size:20px}nav button.on{color:var(--g)}
+h1{font-size:22px;margin:0}h2{font-size:17px;margin:0 0 8px}p{margin:0 0 8px}
+.mut{color:var(--mut);font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:12px}
+.hero{background:linear-gradient(130deg,#12504a,#1f8a77);color:#fff;border-radius:22px;padding:18px;margin-bottom:12px}
+.hero .mut{color:#d3f1e8}
+.chip{display:inline-block;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:800}
+.Low{background:var(--ok);color:var(--ot)}.Moderate{background:var(--warn);color:var(--wt)}.Elevated{background:var(--bad);color:var(--bt)}.Start{background:var(--mint);color:var(--ink)}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.st{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px}
+.st b{font-size:22px;display:block}.st span{font-size:12px;color:var(--mut)}
+button.b{border:0;border-radius:13px;padding:12px 14px;font-weight:700;font-size:15px;font-family:inherit;cursor:pointer;background:var(--g);color:#fff;width:100%}
+button.s{background:var(--mint);color:var(--ink)}
+button.b+button.b{margin-top:8px}
+.note{background:var(--warn);color:var(--wt);border-radius:14px;padding:11px;font-size:12px;margin-bottom:12px}
+.urg{background:var(--bad);color:var(--bt);border-radius:14px;padding:11px;font-size:13px;margin-bottom:12px}
+.big{font-size:44px;font-weight:800;text-align:center;font-variant-numeric:tabular-nums;margin:6px 0}
+.step{display:flex;align-items:center;gap:10px}.step button{width:38px;height:38px;border-radius:50%;border:0;background:var(--mint);color:var(--ink);font-size:20px;font-weight:800;cursor:pointer}
+.step b{min-width:54px;text-align:center;font-size:18px}
+.bar{height:9px;background:var(--mint);border-radius:9px;overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:var(--g)}
+.efield{height:230px;display:grid;place-items:center;background:#fff;border-radius:16px;margin-bottom:10px;color:#000;font-weight:900;font-family:Arial,sans-serif;overflow:hidden}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:240px;margin:0 auto 10px}
+.pad button{height:54px;border:0;border-radius:14px;background:var(--mint);color:var(--ink);font-size:22px;cursor:pointer}
+input,textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:11px;font:inherit;background:var(--card);color:var(--ink)}
+textarea{height:210px;font-size:12px}
+li{margin-bottom:5px}ul{padding-left:18px;margin:6px 0}
+#toast{position:absolute;left:16px;right:16px;bottom:78px;background:#12302e;color:#fff;border-radius:12px;padding:10px 12px;font-size:13px;opacity:0;transition:.3s;pointer-events:none}
+#toast.on{opacity:1}
+.menu{display:flex;gap:12px;align-items:center;text-align:left;width:100%;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px;margin-bottom:10px;color:var(--ink);font-family:inherit;font-size:15px;cursor:pointer}.menu>span{font-size:24px}.menu small{display:block;color:var(--mut)}
+.star{width:44px;height:44px;border:0;border-radius:12px;background:var(--mint);color:var(--ink);font-weight:700;font-size:18px;cursor:pointer}.star.on{background:var(--g);color:#fff}
+.err{color:var(--bt);font-size:13px;min-height:18px;margin:6px 0}
+table.t{width:100%;border-collapse:collapse;font-size:12px}.t td{padding:6px 0;border-bottom:1px solid var(--line);vertical-align:top}
+:root[data-theme=hc]{--bg:#000;--card:#000;--ink:#fff;--mut:#f0f0f0;--g:#ffe14d;--mint:#262626;--line:#fff;--warn:#000;--wt:#ffe14d;--bad:#000;--bt:#ff9d8a;--ok:#000;--ot:#8dff9e}
+[data-theme=hc] button.b,[data-theme=hc] .star.on{color:#000}[data-theme=hc] .chip{border:1px solid currentColor}[data-theme=hc] .hero{background:#000;border:2px solid #ffe14d}[data-theme=hc] .urg,[data-theme=hc] .note{border:1px solid currentColor}
+</style></head><body>
+<div class="phone"><div id="scr"></div>
+<nav id="nav"></nav><div id="toast"></div></div>
+<script>
+const $=s=>document.querySelector(s),K="clearview-v1";
+const day=o=>{const d=new Date();d.setDate(d.getDate()-o);return d.toLocaleDateString("en-CA")};
+const demoData=()=>({tests:[[35,6],[28,6],[21,5],[14,5],[7,4]].map(([o,l])=>({d:day(o),l})),
+ logs:Object.fromEntries([0,1,2,3,4,5,6].map(i=>[day(i),{out:[.5,1,.5,1.5,.5,.5,1][i],scr:[4,5,4.5,3.5,5,6,4][i],br:[2,3,1,4,2,0,3][i]}]))});
+const seed=()=>({name:"",age:"",tests:[],logs:{}});
+let S=null;try{S=JSON.parse(localStorage.getItem(K))}catch(e){}if(!S)S=seed();S.fb=S.fb||[];S.al=S.al||[];S.z=S.z||1;
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(S))}catch(e){toast("Storage unavailable: data not saved")}};
+const td=()=>S.logs[day(0)]||(S.logs[day(0)]={out:0,scr:0,br:0});
+const toast=m=>{const t=$("#toast");t.textContent=m;t.classList.add("on");setTimeout(()=>t.classList.remove("on"),2200)};
+const tests=()=>S.tests.slice().sort((a,b)=>a.d<b.d?-1:1);
+const pct=l=>Math.round(l/7*100);
+let role="pat",sub="",locked=true,tab="home",T=null,tm={m:"idle",s:1200,iv:null,fast:false};
+
+function avg7(k){let v=[];for(let i=0;i<7;i++){const l=S.logs[day(i)];if(l&&(l.out||l.scr||l.br))v.push(l[k])}return v.length?v.reduce((a,b)=>a+b,0)/v.length:null}
+function insight(){
+ const t=tests(),out=avg7("out"),scr=avg7("scr");let p=0,f=[];
+ if(t.length>=2){const d=t[Math.max(0,t.length-5)].l-t[t.length-1].l;
+  if(d>=2){p+=2;f.push(["bad","Clarity score fell "+d+" levels across recent checks"])}
+  else if(d==1){p+=1;f.push(["mid","Clarity score dipped by 1 level"])}
+  else f.push(["ok","Clarity score is stable"])}
+ else f.push(["mid","Do a few more checks to reveal a trend"]);
+ if(out==null)f.push(["mid","Log outdoor and screen time to unlock habit insights"]);
+ else if(out<1){p+=1.5;f.push(["bad","Outdoor time averages only "+out.toFixed(1)+" h/day (goal 2 h)"])}
+ else if(out<2){p+=.5;f.push(["mid","Outdoor time averages "+out.toFixed(1)+" h/day (goal 2 h)"])}
+ else f.push(["ok","Outdoor time meets the 2 h/day goal"]);
+ if(scr==null);
+ else if(scr>=6){p+=2;f.push(["bad","Screen time is very high ("+scr.toFixed(1)+" h/day)"])}
+ else if(scr>=4){p+=1;f.push(["mid","Screen time is high ("+scr.toFixed(1)+" h/day)"])}
+ else f.push(["ok","Screen time is moderate ("+scr.toFixed(1)+" h/day)"]);
+ const none=!t.length&&out==null;const lv=none?"Start":p>=3.5?"Elevated":p>=1.5?"Moderate":"Low";
+ const adv={Start:"Do your first vision check and log today’s habits to see your trend.",Elevated:"Please book an eye exam and share the doctor report. Add outdoor time and screen breaks meanwhile.",Moderate:"Keep checking weekly and improve outdoor time and breaks. Book an exam if the trend continues.",Low:"Great routine! Keep up the weekly checks and regular eye exams."};
+ return{lv,f,adv:adv[lv],out:out||0,scr:scr||0}}
+
+function render(){
+ document.documentElement.dataset.theme=S.hc?"hc":"";$("#scr").style.zoom=S.z||1;
+ if(!S.onboarded||locked){$("#scr").innerHTML=gate();$("#nav").innerHTML="";return}
+ if(role=="doc"){$("#scr").innerHTML=docView();$("#nav").innerHTML=`<button class="on" onclick="role='pat';render()"><span>⬅</span>Exit doctor view</button>`;return}
+ const v={home,test,progress,habits,more}[tab]();$("#scr").innerHTML=v;$("#scr").scrollTop=0;
+ $("#nav").innerHTML=[["home","🏠","Home"],["test","👁","Check"],["progress","📈","Progress"],["habits","⏱","Habits"],["more","☰","More"]]
+ .map(([k,i,n])=>`<button class="${k==tab?"on":""}" onclick="go('${k}')"><span>${i}</span>${n}</button>`).join("");paintTimer()}
+const go=k=>{if(T&&!T.done&&k!="test")toast("Check cancelled, nothing was saved");tab=k;sub="";if(k=="test")T=null;render()};
+
+function home(){const i=insight(),t=tests(),l=t.length?t[t.length-1]:null,g=td();
+ return `<div class="row" style="margin-bottom:12px"><div><h1>Hi, ${S.name} 👋</h1><div class="mut">Protect your eyes, one habit at a time</div>${S.demo?'<span class="chip Moderate">Demo data</span>':""}</div><button onclick="lock()" aria-label="Lock app" style="border:0;background:var(--mint);border-radius:50%;width:44px;height:44px;font-size:20px;cursor:pointer">🔒</button></div>
+ <div class="hero"><div class="mut">Eye-health trend</div><div style="font-size:26px;font-weight:800;margin:4px 0">${i.lv=="Start"?"Welcome! Let’s begin":i.lv+" risk signal"}</div><p class="mut">${i.adv}</p>
+ <button class="b s" onclick="go('progress')">See why</button></div>
+ <div class="grid"><div class="st"><span>Last clarity score</span><b>${l?pct(l.l)+"%":"–"}</b></div>
+ <div class="st"><span>Outdoor today</span><b>${g.out} / 2 h</b><div class="bar"><i style="width:${Math.min(100,g.out/2*100)}%"></i></div></div>
+ <div class="st"><span>Screen today</span><b>${g.scr} h</b></div><div class="st"><span>Breaks today</span><b>${g.br}</b></div></div>
+ <button class="b" onclick="go('test')">👁 Start vision check</button><button class="b s" onclick="go('habits')">⏱ Start break timer</button>
+ <div class="urg" style="margin-top:12px"><b>Urgent care:</b> sudden vision loss, severe eye pain or an eye injury needs a doctor right away. Do not wait for the app.</div>`}
+
+function test(){
+ if(!T)return `<h1>Vision clarity check</h1><p class="mut">A quick home screening that tracks change over time.</p>
+ <div class="card"><h2>Before you start</h2><ul><li>Hold the phone at arm’s length (about 40 cm)</li><li>Use good light and wear usual glasses</li><li>Tap the direction the “E” opens toward</li><li>Use the same phone and distance every time</li></ul></div>
+ <div class="note">Screening only. This app cannot diagnose myopia or replace an eye exam.</div><button class="b" onclick="startTest()">Start check</button>`;
+ if(T.done){const sc=pct(T.lvl);return `<h1>Check complete ✓</h1><div class="card" style="text-align:center"><div class="mut">Clarity score</div><div class="big">${sc}%</div><p class="mut">Level ${T.lvl} of 7 reached. Saved to your progress.</p></div>
+ <button class="b" onclick="go('progress')">View progress</button><button class="b s" onclick="startTest()">Repeat</button>`}
+ const sz=[110,80,58,42,30,22,16][T.lvl],rot={r:0,d:90,l:180,u:270}[T.dir];
+ return `<div class="row"><h2>Level ${T.lvl+1} of 7</h2><span class="mut">Look at the E</span></div><div class="bar" style="margin-bottom:12px"><i style="width:${T.lvl/7*100}%"></i></div>
+ <div class="efield"><span style="font-size:${sz}px;line-height:1;transform:rotate(${rot}deg);display:block">E</span></div>
+ <div class="pad"><span></span><button onclick="ans('u')">▲</button><span></span><button onclick="ans('l')">◀</button><button onclick="ans('x')" style="font-size:12px">Can’t see</button><button onclick="ans('r')">▶</button><span></span><button onclick="ans('d')">▼</button><span></span></div>
+ <p class="mut" style="text-align:center">Which way does the E open?</p><button class="b s" onclick="go('home')">Cancel check</button>`}
+const rd=()=>"rdlu"[Math.floor(Math.random()*4)];
+function startTest(){T={lvl:0,n:0,ok:0,dir:rd()};tab="test";render()}
+function ans(a){if(a==T.dir)T.ok++;T.n++;
+ if(T.n==2){if(T.ok==2){T.lvl++;T.n=0;T.ok=0;if(T.lvl==7)return fin()}else return fin()}
+ T.dir=rd();render()}
+function fin(){T.done=true;const d=day(0);S.tests=S.tests.filter(x=>x.d!=d);S.tests.push({d,l:T.lvl});save();toast("Result saved");render()}
+
+function chart(){const t=tests().slice(-8);if(t.length<2)return `<p class="mut">Complete at least two checks to see a chart.</p>`;
+ const W=320,H=150,x=i=>30+i*(W-45)/(t.length-1),y=l=>H-22-l/7*(H-40);
+ const pts=t.map((r,i)=>x(i)+","+y(r.l)).join(" ");
+ return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Clarity score over time">
+ ${[0,50,100].map(p=>`<line x1="30" x2="${W-10}" y1="${y(p/100*7)}" y2="${y(p/100*7)}" stroke="var(--line)"/><text x="2" y="${y(p/100*7)+4}" font-size="10" fill="var(--mut)">${p}%</text>`).join("")}
+ <polyline points="${pts}" fill="none" stroke="var(--g)" stroke-width="3"/>
+ ${t.map((r,i)=>`<circle cx="${x(i)}" cy="${y(r.l)}" r="4.5" fill="var(--g)"/><text x="${x(i)}" y="${H-5}" font-size="9" text-anchor="middle" fill="var(--mut)">${r.d.slice(5)}</text>`).join("")}</svg>`}
+
+function progress(){const i=insight();
+ return `<h1>Progress</h1><p class="mut">Your clarity score over time</p><div class="card">${chart()}</div>
+ <div class="card"><div class="row"><h2>Smart insight</h2><span class="chip ${i.lv}">${i.lv}</span></div>
+ <ul style="list-style:none;padding:0">${i.f.map(([c,t])=>`<li>${{ok:"🟢",mid:"🟡",bad:"🔴"}[c]} ${t}</li>`).join("")}</ul><p><b>${i.adv}</b></p>
+ <p class="mut">How it works: a transparent rule-based model combines your score trend, outdoor time and screen time from the last 7 days. It flags a trend, it does not diagnose.</p></div>
+ <div class="card"><h2>History</h2>${tests().slice().reverse().map(r=>`<div class="row" style="padding:6px 0;border-bottom:1px solid var(--line)"><span>${r.d}</span><b>${pct(r.l)}%</b></div>`).join("")||"<p class='mut'>No checks yet.</p>"}</div>`}
+
+function habits(){const g=td();
+ const st=(k,l,u)=>`<div class="row" style="margin:10px 0"><div><b>${l}</b><div class="mut">today</div></div><div class="step"><button onclick="adj('${k}',-.5)">−</button><b>${g[k]} ${u}</b><button onclick="adj('${k}',.5)">+</button></div></div>`;
+ return `<h1>Daily habits</h1><p class="mut">Small routines slow down eye strain</p>
+ <div class="card"><h2>20-20-20 break timer</h2><p class="mut">Every 20 minutes, look 20 feet (6 m) away for 20 seconds.</p>
+ <div class="big" id="tclock">20:00</div><p class="mut" id="tmsg" style="text-align:center"></p>
+ <button class="b" id="tbtn" onclick="toggleTimer()">Start</button>
+ <label class="mut" style="display:block;margin-top:8px"><input type="checkbox" style="width:auto" onchange="tm.fast=this.checked;resetTimer()"> Demo speed (15 s instead of 20 min)</label></div>
+ <div class="card"><h2>Today’s log</h2>${st("out","Outdoor time","h")}${st("scr","Screen time","h")}
+ <div class="row" style="margin:10px 0"><div><b>Breaks done</b></div><div class="step"><button onclick="adj('br',-1)">−</button><b>${g.br}</b><button onclick="adj('br',1)">+</button></div></div></div>
+ <div class="card"><h2>Tips</h2><ul><li>Spend about 2 hours outdoors daily</li><li>Keep screens 30–40 cm from the eyes</li><li>Read in good light, never lying down</li><li>Get an eye exam every year</li></ul></div>`}
+function adj(k,d){const g=td();const n=+(g[k]+d).toFixed(1);if(n>24)return toast("Maximum is 24");g[k]=Math.max(0,n);save();render()}
+
+function paintTimer(){const c=$("#tclock");if(!c)return;const m=Math.floor(tm.s/60),s=tm.s%60;
+ c.textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+ $("#tmsg").textContent=tm.m=="brk"?"👀 Look far away now!":tm.m=="run"?"Working… next eye break":"Ready when you are";
+ $("#tbtn").textContent=tm.m=="idle"?"Start":"Stop"}
+function resetTimer(){clearInterval(tm.iv);tm.m="idle";tm.s=tm.fast?15:1200;paintTimer()}
+function toggleTimer(){if(tm.m!="idle")return resetTimer();tm.m="run";tm.s=tm.fast?15:1200;tm.iv=setInterval(()=>{tm.s--;
+ if(tm.s<=0){if(tm.m=="run"){tm.m="brk";tm.s=20;try{navigator.vibrate(200)}catch(e){}toast("Break time! Look 20 ft away")}
+ else{tm.m="run";tm.s=tm.fast?15:1200;td().br++;save();toast("Break counted ✓");if(tab=="home"||tab=="habits")render()}}paintTimer()},1000);paintTimer()}
+
+function summary(){const i=insight(),t=tests();
+ return `CLEARVIEW – VISION SCREENING SUMMARY
+Patient: ${S.name}, age ${S.age}
+Date: ${day(0)}
+
+Clarity checks (home screening, 100% = best):
+${t.map(r=>"  "+r.d+": "+pct(r.l)+"%").join("\n")||"  none"}
+
+Last 7 days (average): outdoor ${i.out.toFixed(1)} h/day, screen ${i.scr.toFixed(1)} h/day
+Trend signal: ${i.lv}
+${i.f.map(x=>"- "+x[1]).join("\n")}
+
+Note: generated by a student prototype. It is not a diagnosis; please assess with a full eye exam.`}
+function report(){return `<h1>Doctor report</h1><p class="mut">Share this summary with your eye doctor</p>
+ <div class="card"><textarea id="rep" readonly>${summary()}</textarea>
+ <button class="b" onclick="copyRep()" style="margin-top:8px">Copy report</button></div>
+ <div class="card"><h2>Profile</h2><div class="row"><input id="pn" value="${S.name}" onchange="setName(this)" aria-label="Name"><input id="pa" type="number" min="3" max="18" value="${S.age}" style="width:80px" onchange="setAge(this)" aria-label="Age"></div></div>
+ <div class="card"><h2>Privacy</h2><p class="mut">Data stays on this device. No account, no server, no upload.</p>
+ <button class="b s" onclick="loadDemo()">Load demo data (for presentations)</button>
+ <button class="b s" onclick="clearAll()">Clear all data</button></div>
+ <div class="note">Prototype limitation: not clinically validated. It does not measure visual acuity or detect disease.</div>`}
+function copyRep(){const t=$("#rep");t.select();try{navigator.clipboard.writeText(t.value).then(()=>toast("Report copied"),()=>toast("Select the text to copy"))}catch(e){toast("Select the text to copy")}}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function hs(s){let h=5381;for(const c of "cv"+s)h=((h<<5)+h+c.charCodeAt(0))>>>0;return ""+h}
+function log(w){S.al.unshift({t:new Date().toLocaleString(),w});S.al=S.al.slice(0,15)}
+function lock(){locked=true;role="pat";render()}
+function gate(){
+ if(!S.onboarded)return `<div style="text-align:center;font-size:44px">◉</div><h1 style="text-align:center">Welcome to ClearView</h1><p class="mut" style="text-align:center;margin-bottom:12px">Myopia care for students and families</p>
+ <div class="card"><h2>Your privacy</h2><ul><li>Health data stays on this device only</li><li>No account, no server, no ads</li><li>Export or delete everything at any time</li></ul>
+ <label class="mut" style="display:flex;gap:8px"><input id="cs" type="checkbox" style="width:auto"> I understand ClearView is a screening aid, not a diagnosis, and I consent to storing data on this device. (For a child, a parent or guardian consents.)</label></div>
+ <div class="card"><h2>About you</h2><input id="nm" maxlength="20" placeholder="First name" aria-label="First name"><input id="ag" type="number" min="3" max="99" placeholder="Age" aria-label="Age" style="margin-top:8px"></div>
+ <div class="card"><h2>Create a 4-digit PIN</h2><input id="p1" type="password" inputmode="numeric" maxlength="4" placeholder="PIN" aria-label="Create PIN"><p class="err" id="er"></p></div><button class="b" onclick="setup()">Get started</button>`;
+ return `<div style="text-align:center;font-size:44px;margin-top:30px">🔒</div><h1 style="text-align:center">ClearView is locked</h1><p class="mut" style="text-align:center;margin-bottom:12px">Enter your PIN to open ${S.name}’s eye-health data.</p>
+ <div class="card"><input id="p0" type="password" inputmode="numeric" maxlength="4" placeholder="4-digit PIN" aria-label="PIN" onkeydown="if(event.key=='Enter')unlock()"><p class="err" id="er"></p><button class="b" id="ub" onclick="unlock()">Unlock</button></div>
+ <button class="b s" id="rb" onclick="resetAll()">Forgot PIN? Erase all data and start over</button>`}
+function setup(){const e=$("#er");if(!$("#cs").checked)return e.textContent="Please tick the consent box to continue.";
+ const nm=$("#nm").value.trim(),ag=+$("#ag").value;if(!nm||nm.length>20)return e.textContent="Please enter a first name (max 20 characters).";if(!(ag>=3&&ag<=99))return e.textContent="Age must be between 3 and 99.";const p=$("#p1").value;if(!/^\d{4}$/.test(p))return e.textContent="PIN must be exactly 4 digits.";
+ S.name=esc(nm);S.age=ag;S.pin=hs(p);S.onboarded=true;S.consent=day(0);locked=false;log("Consent given, PIN created");save();render()}
+let tries=0,rc=false;
+function unlock(){const e=$("#er");if(hs($("#p0").value)==S.pin){locked=false;tries=0;log("App unlocked");save();render();return}
+ tries++;e.textContent=tries>=3?"Too many attempts. Please wait 10 seconds.":"Incorrect PIN. "+(3-tries)+" tries left.";
+ if(tries>=3){$("#ub").disabled=true;setTimeout(()=>{tries=0;const b=$("#ub");if(b){b.disabled=false;$("#er").textContent=""}},10000)}}
+function resetAll(){if(!rc){rc=true;$("#rb").textContent="Tap again to erase ALL data";return}
+ try{localStorage.removeItem(K)}catch(e){}S=seed();S.fb=[];S.al=[];S.z=1;rc=false;locked=true;tab="home";sub="";role="pat";render()}
+function loadDemo(){Object.assign(S,demoData(),{demo:true});log("Demo data loaded");save();toast("Demo data loaded");render()}
+function clearAll(){S.tests=[];S.logs={};S.demo=false;log("Health data deleted");save();toast("All health data deleted");render()}
+function setAge(el){const a=+el.value;if(!(a>=3&&a<=99)){toast("Age must be between 3 and 99");el.value=S.age;return}S.age=a;save()}
+function setName(el){const n=el.value.trim();if(!n||n.length>20){toast("Enter a name (max 20 characters)");el.value=S.name;return}S.name=esc(n);save()}
+function openDoc(){log("Doctor view opened");save();role="doc";render()}
+
+function docView(){const i=insight(),t=tests();
+ return `<div class="row"><h1>Clinician view</h1><span class="chip Moderate">Read-only</span></div>
+ <p class="mut" style="margin-bottom:12px">Patient: ${S.name}, age ${S.age} · Consent on file ${S.consent||"–"}</p>
+ <div class="card"><h2>Clarity trend</h2>${chart()}</div>
+ <div class="card"><div class="row"><h2>Risk signal</h2><span class="chip ${i.lv}">${i.lv}</span></div>
+ <ul style="list-style:none;padding:0">${i.f.map(([c,x])=>`<li>${{ok:"🟢",mid:"🟡",bad:"🔴"}[c]} ${x}</li>`).join("")}</ul></div>
+ <div class="card"><h2>Home averages (7 days)</h2><p>Outdoor ${i.out.toFixed(1)} h/day · Screen ${i.scr.toFixed(1)} h/day</p><p class="mut">Checks recorded: ${t.length}</p></div>
+ <div class="note">Decision support only. Confirm with a full eye exam. This view was logged in the access log.</div>`}
+
+const zs=[.9,1,1.15,1.3];
+function zoom(d){let i=zs.indexOf(S.z||1);if(i<0)i=1;S.z=zs[Math.min(3,Math.max(0,i+d))];save();render()}
+function toggleHC(){S.hc=!S.hc;save();render()}
+function acc(){return `<h1>Accessibility</h1><p class="mut" style="margin-bottom:12px">Comfortable for different users</p>
+ <div class="card"><h2>Text size</h2><div class="step"><button onclick="zoom(-1)" aria-label="Smaller text">A−</button><b>${Math.round((S.z||1)*100)}%</b><button onclick="zoom(1)" aria-label="Larger text">A+</button></div></div>
+ <div class="card"><div class="row"><div><h2>High contrast</h2><span class="mut">Yellow on black</span></div><button class="b ${S.hc?"":"s"}" style="width:80px" onclick="toggleHC()">${S.hc?"On":"Off"}</button></div></div>
+ <div class="card"><h2>Built-in support</h2><ul><li>Large tap targets, one task per screen</li><li>Status shown with words and icons, not color alone</li><li>Labels for screen readers</li><li>Automatic dark mode</li><li>Plain language for children and parents</li></ul></div>`}
+
+function priv(){return `<h1>Privacy &amp; security</h1><p class="mut" style="margin-bottom:12px">Protection of health data</p>
+ <div class="card"><h2>What is collected</h2><ul><li>First name and age</li><li>Clarity check scores</li><li>Outdoor time, screen time, breaks</li><li>Optional feedback</li></ul><p class="mut">No location, camera, contacts or photos.</p></div>
+ <div class="card"><h2>Where it is stored</h2><p>Only in this device’s browser storage. No server, API or analytics.</p></div>
+ <div class="card"><h2>How it is protected</h2><ul><li>Consent before saving (given ${S.consent||"–"})</li><li>PIN lock, stored as a hash, 3-try limit</li><li>Manual lock button on Home</li><li>Doctor view is read-only and logged</li><li>Data minimisation, in line with GDPR</li></ul></div>
+ <div class="card"><h2>Your rights</h2><p class="mut">Export with the doctor report. Delete at any time.</p><button class="b s" onclick="clearAll()">Delete health data</button><button class="b s" id="rb" onclick="resetAll()">Erase everything and reset</button></div>
+ <div class="card"><h2>Access log</h2>${S.al.length?`<table class="t">${S.al.slice(0,6).map(a=>`<tr><td>${a.t}</td><td>${a.w}</td></tr>`).join("")}</table>`:"<p class='mut'>No entries yet.</p>"}</div>
+ <div class="note">A real release would add encryption at rest, HTTPS, server-side access control and a GDPR/HIPAA review. Children’s data needs parent or guardian consent.</div>`}
+
+function how(){const bx=(x,y,w,t,s,c)=>`<rect x="${x}" y="${y}" width="${w}" height="52" rx="10" style="fill:var(--${c})"/><text x="${x+w/2}" y="${y+22}" text-anchor="middle" font-size="11" font-weight="700" style="fill:var(--${c=="g"?"bg":"ink"})">${t}</text><text x="${x+w/2}" y="${y+38}" text-anchor="middle" font-size="9" style="fill:var(--${c=="g"?"bg":"mut"})">${s}</text>`;
+ return `<h1>How it works</h1><div class="card"><svg viewBox="0 0 340 200" width="100%" role="img" aria-label="System diagram: user app, core modules, local data store, doctor view and security layer"><defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" style="fill:var(--mut)"/></marker></defs>
+ ${bx(4,10,92,"User app","Parent · Child","g")}${bx(124,10,92,"Core modules","Check·Habits·Insight","g")}${bx(244,10,92,"Local store","On-device data","g")}${bx(124,92,92,"Doctor view","Read-only","mint")}
+ <g style="stroke:var(--mut);stroke-width:2" marker-end="url(#ar)"><line x1="96" y1="36" x2="122" y2="36" marker-end="url(#ar)"/><line x1="216" y1="36" x2="242" y2="36" marker-end="url(#ar)"/><line x1="170" y1="92" x2="170" y2="64" marker-end="url(#ar)"/></g>
+ <rect x="3" y="158" width="334" height="34" rx="9" style="fill:none;stroke:var(--bt);stroke-dasharray:5 4;stroke-width:1.5"/><text x="170" y="179" text-anchor="middle" font-size="10" font-weight="700" style="fill:var(--bt)">Security: consent · PIN lock · access log · no network</text></svg></div>
+ <div class="card"><h2>AI and connections</h2><p>The insight uses simple rule-based logic on the device. No external AI service, API or hospital system is connected yet.</p></div>
+ <div class="card"><h2>Error handling</h2><ul><li>Wrong PIN: tries counted, 10 s pause after 3</li><li>Invalid age, name or hours: rejected with a message</li><li>Check interrupted or cancelled: nothing saved</li><li>Storage unavailable: clear warning</li></ul></div>
+ <div class="card"><h2>Future growth</h2><ul><li>Export to clinic systems (FHIR)</li><li>School nurse dashboard</li><li>Model trained on consented data</li><li>More languages</li></ul></div>
+ <div class="card"><h2>Equity</h2><p>Free, offline, runs on low-end phones. Families without smartphones could use school tablets.</p></div>`}
+
+let rt=0;
+function rate(n){rt=n;document.querySelectorAll(".star").forEach((b,i)=>b.classList.toggle("on",i<n))}
+function sendFb(){if(!rt){$("#er").textContent="Please choose a rating first.";return}
+ S.fb.push({r:rt,c:esc($("#fc").value.slice(0,200)),t:day(0)});rt=0;save();toast("Thank you for your feedback!");render()}
+function fb(){const n=S.fb.length,a=n?(S.fb.reduce((s,x)=>s+x.r,0)/n).toFixed(1):"–";
+ return `<h1>Feedback</h1><p class="mut" style="margin-bottom:12px">How easy was ClearView to use?</p>
+ <div class="card"><div class="row">${[1,2,3,4,5].map(i=>`<button class="star" onclick="rate(${i})" aria-label="${i} of 5">${i}</button>`).join("")}</div><p class="mut">1 = very hard · 5 = very easy</p>
+ <input id="fc" maxlength="200" placeholder="What should be improved?" aria-label="Comment"><p class="err" id="er"></p><button class="b" onclick="sendFb()">Send feedback</button></div>
+ <div class="card"><h2>Results so far</h2><div class="grid" style="margin:0"><div class="st"><b>${a}</b><span>average / 5</span></div><div class="st"><b>${n}</b><span>responses</span></div></div>
+ ${S.fb.slice(-4).reverse().filter(x=>x.c).map(x=>`<p class="mut">“${x.c}” (${x.r}/5)</p>`).join("")}</div>`}
+
+function more(){if(sub)return `<button class="b s" style="width:auto;margin-bottom:12px" onclick="sub='';render()">← Back</button>`+({report,priv,acc,how,fb}[sub])();
+ return `<h1>More</h1><p class="mut" style="margin-bottom:12px">Reports, privacy and settings</p>`+[["report","📋","Doctor report","Summary, profile, demo data"],["doc","🩺","Doctor view","Read-only clinician screen"],["priv","🔒","Privacy &amp; security","Data, consent, access log"],["acc","♿","Accessibility","Text size, high contrast"],["how","🧩","How it works","System, AI, errors, future"],["fb","💬","Feedback","Rate the app"]]
+ .map(([k,i,t,d])=>`<button class="menu" onclick="${k=="doc"?"openDoc()":"sub='"+k+"';render()"}"><span>${i}</span><div><b>${t}</b><small>${d}</small></div></button>`).join("")}
+
+document.addEventListener("visibilitychange",()=>{if(document.hidden&&T&&!T.done){T=null;toast("Check paused. Please start again.");if(tab=="test")render()}});
+
+render();
+</script></body></html>
